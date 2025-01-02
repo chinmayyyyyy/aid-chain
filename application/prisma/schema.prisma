@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id     Int      @id @default(autoincrement())
+  username    String
+  email       String   @unique
+  password    String
+  role        String   @default("Needy") @db.VarChar(20)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  Requests    Request[]
+  Donations   Donation[]
+  Notifications Notification[]
+
+  DonationHistory DonationHistory[]
+
+  Donation Donation[] @relation("Donor")
+}
+
+model Request {
+  request_id   Int      @id @default(autoincrement())
+  user_id      Int
+  item_type    String   @db.VarChar(50)
+  quantity     Int?
+  description  String?
+  status       String   @default("Pending") @db.VarChar(20)
+  priority     Boolean  @default(false)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  User         User     @relation(fields: [user_id], references: [user_id])
+  Donations    Donation[]
+
+  EmergencyRequest EmergencyRequest[]
+}
+
+model Donation {
+  donation_id  Int      @id @default(autoincrement())
+  donor_id     Int
+  request_id   Int?
+  donation_type String  @db.VarChar(50)
+  amount       Float?
+  description  String?
+  status       String   @default("Pending") @db.VarChar(20)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  Donor        User     @relation("Donor", fields: [donor_id], references: [user_id])
+  Request      Request? @relation(fields: [request_id], references: [request_id])
+
+  DonationHistory DonationHistory[]
+
+  User User[]
+}
+
+model Notification {
+  notification_id Int      @id @default(autoincrement())
+  user_id         Int
+  message         String
+  is_read         Boolean  @default(false)
+  created_at      DateTime @default(now())
+  User            User     @relation(fields: [user_id], references: [user_id])
+}
+
+model EmergencyRequest {
+  emergency_id Int      @id @default(autoincrement())
+  request_id   Int
+  is_resolved  Boolean  @default(false)
+  created_at   DateTime @default(now())
+  Request      Request  @relation(fields: [request_id], references: [request_id])
+}
+
+model DonationHistory {
+  history_id Int      @id @default(autoincrement())
+  donation_id Int
+  donor_id   Int
+  created_at DateTime @default(now())
+  Donation   Donation @relation(fields: [donation_id], references: [donation_id])
+  Donor      User     @relation(fields: [donor_id], references: [user_id])
+}
