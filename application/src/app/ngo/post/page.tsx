@@ -1,3 +1,4 @@
+"use client"
 import { useState, ChangeEvent, FormEvent } from "react";
 
 interface NGOPostFormState {
@@ -56,7 +57,7 @@ export default function NGOPost() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen w-full bg-gray-100">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-lg shadow-md w-full max-w-md"
