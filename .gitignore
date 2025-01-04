@@ -4,12 +4,13 @@
 /node_modules
 /.pnp
 .pnp.js
-
+.env*.local
 application/.env
-
+/.env
 .env
 env
-/.env
+application\.env
+
 # testing
 /coverage
 

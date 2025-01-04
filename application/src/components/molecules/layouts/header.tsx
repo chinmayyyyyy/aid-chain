@@ -1,7 +1,11 @@
+"use client"
 import Button from '@/components/atom/button';
 import Logo from '@/components/atom/logo';
+import { signIn, signOut, useSession } from "next-auth/react";
 import React from 'react';
 import { HiMenu } from 'react-icons/hi';
+
+
 
 const Header = () => {
   return (
@@ -19,10 +23,11 @@ const Header = () => {
 
       <div className=' hidden  lg:flex items-center    justify-center gap-5 '>
         <div>
-          <h2>Sign Up</h2>
+        <Button width='w-[178px]' onClick={() => signIn() }>Login</Button>
         </div>
-        <Button width='w-[178px]'>SignIn</Button>
+        <Button width='w-[178px]' onClick={() => signIn()}>SignIn</Button>
       </div>
+      
 
       {/* display for mobile phone */}
       <div className='block lg:hidden'>
