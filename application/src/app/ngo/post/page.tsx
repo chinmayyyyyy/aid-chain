@@ -1,21 +1,26 @@
-"use client"
+"use client";
+
 import { useState, ChangeEvent, FormEvent } from "react";
 
 interface NGOPostFormState {
   ngo_id: number;
+  title: string;
   item_details: string;
   reason: string;
   address: string;
   packaging_instructions?: string;
+  status?: string; // Defaults to "Active"
 }
 
 export default function NGOPost() {
   const [form, setForm] = useState<NGOPostFormState>({
     ngo_id: 0,
+    title: "",
     item_details: "",
     reason: "",
     address: "",
     packaging_instructions: "",
+    status: "Active",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -38,19 +43,21 @@ export default function NGOPost() {
 
       const data = await response.json();
       if (response.ok) {
-        alert("Post created successfully!");
+        alert("NGO Post created successfully!");
         setForm({
           ngo_id: 0,
+          title: "",
           item_details: "",
           reason: "",
           address: "",
           packaging_instructions: "",
+          status: "Active",
         }); // Reset form
       } else {
         alert(data.error || "Failed to create post");
       }
     } catch (error) {
-      alert("An error occurred while creating the post.");
+      alert("An error occurred while creating the NGO Post.");
     } finally {
       setIsLoading(false);
     }
@@ -73,6 +80,21 @@ export default function NGOPost() {
             name="ngo_id"
             placeholder="Enter NGO ID"
             value={form.ngo_id}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="title" className="block text-gray-700 font-medium mb-1">
+            Title
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Enter post title"
+            value={form.title}
             onChange={handleChange}
             required
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"

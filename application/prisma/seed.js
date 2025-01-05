@@ -2,84 +2,101 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+
 async function main() {
-  // Create Users
+  // Seed Users
   const users = await prisma.user.createMany({
     data: [
-      { username: 'John Doe', email: 'john.doe@example.com', password: 'password123', role: 'Donor' },
-      { username: 'Jane Smith', email: 'jane.smith@example.com', password: 'password123', role: 'NGO' },
-      { username: 'Admin User', email: 'admin@example.com', password: 'adminpassword', role: 'Admin' },
+      { username: "JohnDoe", email: "john@example.com", password: "password123", role: "Donor" },
+      { username: "JaneSmith", email: "jane@example.com", password: "password123", role: "Donor" },
+      { username: "HelpingHandsNGO", email: "ngo@example.com", password: "ngo123", role: "NGO" },
     ],
   });
 
-  console.log(`Created ${users.count} users`);
-
-  // Create NGO Posts
-  const ngoPost = await prisma.nGOPost.create({
-    data: {
-      ngo_id: 2, // Jane Smith (NGO)
-      item_details: JSON.stringify({ items: ['Blankets', 'Clothing'] }),
-      reason: 'Help for flood victims',
-      address: '123 NGO Street, Cityville',
-      packaging_instructions: 'Use eco-friendly bags',
-    },
+  // Seed NGO Posts
+  const ngoPosts = await prisma.nGOPost.createMany({
+    data: [
+      {
+        ngo_id: 3,
+        title: "Winter Clothing Drive",
+        item_details: JSON.stringify([
+          { item: "Blankets", quantity: 50 },
+          { item: "Sweaters", quantity: 100 },
+        ]),
+        reason: "To help underprivileged families stay warm during winter",
+        address: "123 Charity Lane, Helping City",
+        packaging_instructions: "Pack each item in a waterproof bag",
+        status: "Active",
+      },
+      {
+        ngo_id: 3,
+        title: "School Supplies Collection",
+        item_details: JSON.stringify([
+          { item: "Notebooks", quantity: 200 },
+          { item: "Pens", quantity: 500 },
+        ]),
+        reason: "To support education for children in rural areas",
+        address: "123 Charity Lane, Helping City",
+        status: "Active",
+      },
+    ],
   });
 
-  console.log('Created NGO Post:', ngoPost);
-
-  // Create Requests
-  const request = await prisma.request.create({
-    data: {
-      user_id: 1, // John Doe (Donor)
-      item_type: 'Food',
-      quantity: 50,
-      description: 'Canned food for local shelter',
-      priority: true,
-    },
+  // Seed Donations
+  const donations = await prisma.donation.createMany({
+    data: [
+      {
+        donor_id: 1,
+        post_id: 1,
+        courier_number: "AB123456789",
+        amount: null,
+        status: "Pending",
+      },
+      {
+        donor_id: 2,
+        post_id: 2,
+        courier_number: "CD987654321",
+        amount: null,
+        status: "Confirmed",
+      },
+      {
+        donor_id: 1,
+        post_id: 1,
+        courier_number: null,
+        amount: 5000.0,
+        status: "Delivered",
+      },
+    ],
   });
 
-  console.log('Created Request:', request);
-
-  // Create Donations
-  const donation = await prisma.donation.create({
-    data: {
-      donor_id: 1, // John Doe
-      request_id: request.request_id,
-      donation_type: 'Money',
-      amount: 100.5,
-      description: 'Donation for food',
-    },
+  // Seed Notifications
+  const notifications = await prisma.notification.createMany({
+    data: [
+      {
+        user_id: 1,
+        message: "Your donation has been confirmed for 'Winter Clothing Drive'.",
+        is_read: false,
+      },
+      {
+        user_id: 2,
+        message: "Your donation has been delivered for 'School Supplies Collection'.",
+        is_read: true,
+      },
+      {
+        user_id: 3,
+        message: "A new donation has been made for 'Winter Clothing Drive'.",
+        is_read: false,
+      },
+    ],
   });
 
-  console.log('Created Donation:', donation);
-
-  // Create Notifications
-  const notification = await prisma.notification.create({
-    data: {
-      user_id: 2, // Jane Smith (NGO)
-      message: 'New donation received for your post',
-    },
-  });
-
-  console.log('Created Notification:', notification);
-
-  // Create Donation History
-  const donationHistory = await prisma.donationHistory.create({
-    data: {
-      donation_id: donation.donation_id,
-      donor_id: 1, // John Doe
-    },
-  });
-
-  console.log('Created Donation History:', donationHistory);
+  console.log("Seed data created successfully!");
 }
 
 main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
+  .then(() => prisma.$disconnect())
+  .catch((e) => {
     console.error(e);
-    await prisma.$disconnect();
+    prisma.$disconnect();
     process.exit(1);
   });
