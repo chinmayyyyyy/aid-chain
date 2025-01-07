@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { ngo_id, item_details, reason, address, packaging_instructions } = req.body;
+  const { ngo_id, title , item_details, reason, address, packaging_instructions } = req.body;
 
   if (!ngo_id || !item_details || !reason || !address) {
     return res.status(400).json({ error: "Missing required fields" });
@@ -15,6 +15,7 @@ export default async function handler(req, res) {
     const newPost = await prisma.nGOPost.create({
       data: {
         ngo_id : parseInt(ngo_id),
+        title,
         item_details,
         reason,
         address,
