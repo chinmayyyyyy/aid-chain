@@ -13,7 +13,7 @@ interface ICharityBoxProps {
 
 const CharityDonationBox: FC<ICharityBoxProps> = ({ path, title, location, description }) => {
   return (
-    <div className="lg:w-[416px] py-[1.5em] px-5" style={BORDER_STYLE}>
+    <div className="bg-accent_yellow lg:w-[416px] py-[1.5em] px-5" style={BORDER_STYLE}>
       <div className="my-5 py-3 px-2 rounded-md w-[fit-content] bg-[#F7F9FD]">
         <h1 className="font-[500]">{title}</h1>
         <p className="text-[#787878]">{location}</p>

@@ -1,7 +1,7 @@
 "use client"
 import Button from '@/components/atom/button';
 import Logo from '@/components/atom/logo';
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn} from "next-auth/react";
 import React from 'react';
 import { HiMenu } from 'react-icons/hi';
 

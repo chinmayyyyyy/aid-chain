@@ -5,11 +5,10 @@ import CharityListing from '../molecules/explore/charityListing';
 
 const ExploreTemplate = () => {
   return (
-    <>
-      <Header />
+    <div>
       <ExploreHero />
       <CharityListing />
-    </>
+    </div>
   );
 };
 

@@ -28,8 +28,7 @@ export default function NGODashboard() {
   useEffect(() => {
     const fetchNGODetails = async () => {
       try {
-        const data = await getNGODetails(3); // Replace with dynamic NGO ID
-        setNGODetails(data);
+        const data = await getNGODetails(); // Replace with dynamic NGO ID
         console.log("NGO details:", data);
       } catch (error) {
         console.error("Error fetching NGO details:", error);
