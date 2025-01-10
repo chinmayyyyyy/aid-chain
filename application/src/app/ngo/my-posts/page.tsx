@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { deleteNGOPost } from "@/lib/posts";
 
-export default function NGOPostsTab({ ngoId }: { ngoId: number }) {
+export default function NGOPostsTab() {
+  const ngoId = 3;
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

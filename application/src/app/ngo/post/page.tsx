@@ -3,7 +3,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 
 interface NGOPostFormState {
-  ngo_id: number;
+  // ngo_id: number;
   title: string;
   item_details: string;
   reason: string;
@@ -14,7 +14,7 @@ interface NGOPostFormState {
 
 export default function NGOPost() {
   const [form, setForm] = useState<NGOPostFormState>({
-    ngo_id: 0,
+    // ngo_id: 0,
     title: "",
     item_details: "",
     reason: "",
@@ -45,7 +45,7 @@ export default function NGOPost() {
       if (response.ok) {
         alert("NGO Post created successfully!");
         setForm({
-          ngo_id: 0,
+          // ngo_id: 0,
           title: "",
           item_details: "",
           reason: "",
@@ -70,7 +70,7 @@ export default function NGOPost() {
         className="bg-white p-6 rounded-lg shadow-md w-full max-w-md"
       >
         <h1 className="text-xl font-bold mb-4 text-gray-800">Create NGO Post</h1>
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label htmlFor="ngo_id" className="block text-gray-700 font-medium mb-1">
             NGO ID
           </label>
@@ -84,7 +84,7 @@ export default function NGOPost() {
             required
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </div>
+        </div> */}
         <div className="mb-4">
           <label htmlFor="title" className="block text-gray-700 font-medium mb-1">
             Title

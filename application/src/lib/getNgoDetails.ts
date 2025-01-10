@@ -1,5 +1,8 @@
 "use server"
 import prisma from "./prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./auth";
+
 
 interface NGOPost {
     post_id: number;
@@ -20,9 +23,13 @@ interface NGOPost {
   }
 
 // Async function to fetch NGO details from the database
-async function getNGODetails(ngoId: number) {
+async function getNGODetails() {
+  
+  const session = await getServerSession(authOptions);
+  const userId = Number(session?.user?.id) ;
+
   return await prisma.user.findUnique({
-    where: { user_id: ngoId },
+    where: { user_id: userId },
     select: {
       user_id: true,
       username: true,

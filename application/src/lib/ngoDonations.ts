@@ -1,13 +1,19 @@
 "use server"
 import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./auth";
 
 const prisma = new PrismaClient();
 
 export async function getNgoDonations(ngoId: number) {
+   const session = await getServerSession(authOptions);
+    const userId = Number(session?.user?.id) ;
+  
+
   return await prisma.donation.findMany({
     where: {
       NGOPost: {
-        ngo_id: ngoId,
+        ngo_id: userId,
       },
     },
     include: {

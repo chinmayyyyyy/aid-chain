@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prisma"; // Import Prisma client (adjust this import as needed)
-
+import { getUserId } from "@/lib/getUserId";
 const createDonation = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     try {
@@ -11,12 +11,13 @@ const createDonation = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
+      const userId = await getUserId(req, res); 
       // Create the donation in the database
       const donation = await prisma.donation.create({
         data: {
           post_id,
           courier_number,
-          donor_id: 1, // Replace with actual donor ID from session or token
+          donor_id: userId, 
           status: "Pending",
         },
       });
