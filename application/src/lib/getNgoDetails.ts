@@ -27,7 +27,7 @@ async function getNGODetails() {
   
   const session = await getServerSession(authOptions);
   const userId = Number(session?.user?.id) ;
-
+  console.log(session);
   return await prisma.user.findUnique({
     where: { user_id: userId },
     select: {

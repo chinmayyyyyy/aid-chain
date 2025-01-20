@@ -1,7 +1,7 @@
-"use client"
+"use client";
+
 import { useEffect, useState } from "react";
 import getNGODetails from "@/lib/getNgoDetails";
-
 
 interface NGOPost {
   post_id: number;
@@ -30,6 +30,7 @@ export default function NGODashboard() {
       try {
         const data = await getNGODetails(); // Replace with dynamic NGO ID
         console.log("NGO details:", data);
+        setNGODetails(data);
       } catch (error) {
         console.error("Error fetching NGO details:", error);
       } finally {
@@ -40,42 +41,84 @@ export default function NGODashboard() {
     fetchNGODetails();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen w-full">
+        <div className="text-xl font-semibold">Loading...</div>
+      </div>
+    );
 
-  if (!ngoDetails) return <div>No NGO details found.</div>;
+  if (!ngoDetails)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-xl font-semibold">No NGO details found.</div>
+      </div>
+    );
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">NGO Dashboard</h1>
-      <div className="bg-white shadow rounded-lg p-6">
-        <h2 className="text-xl font-semibold">Basic Details</h2>
-        <p><strong>Name:</strong> {ngoDetails.username}</p>
-        <p><strong>Email:</strong> {ngoDetails.email}</p>
-        <p><strong>Role:</strong> {ngoDetails.role}</p>
-        <p><strong>Created At:</strong> {new Date(ngoDetails.created_at).toLocaleDateString()}</p>
-      </div>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-4xl mx-auto">
+        {/* Header Section */}
+        <header className="bg-blue-600 text-white p-6 rounded-lg shadow mb-6">
+          <h1 className="text-3xl font-bold">NGO Dashboard</h1>
+          <p className="text-sm mt-2">Manage and view all your details and posts here.</p>
+        </header>
 
-      <div className="bg-white shadow rounded-lg p-6 mt-6">
-        <h2 className="text-xl font-semibold">Posts</h2>
-        {ngoDetails.NGOPosts.length > 0 ? (
-          <ul className="list-disc pl-6">
-            {ngoDetails.NGOPosts.map((post) => (
-              <li key={post.post_id} className="mb-4">
-                <p><strong>Item Details:</strong> {post.item_details}</p>
-                <p><strong>Reason:</strong> {post.reason}</p>
-                <p><strong>Address:</strong> {post.address}</p>
-                {post.packaging_instructions && (
-                  <p><strong>Packaging Instructions:</strong> {post.packaging_instructions}</p>
-                )}
-                <p><strong>Created At:</strong> {new Date(post.created_at).toLocaleDateString()}</p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No posts available.</p>
-        )}
+        {/* Basic Details */}
+        <section className="bg-white p-6 rounded-lg shadow mb-6">
+          <h2 className="text-2xl font-semibold border-b pb-2 mb-4">Basic Details</h2>
+          <div className="space-y-2">
+            <p>
+              <strong>Name:</strong> {ngoDetails.username}
+            </p>
+            <p>
+              <strong>Email:</strong> {ngoDetails.email}
+            </p>
+            <p>
+              <strong>Role:</strong> {ngoDetails.role}
+            </p>
+            <p>
+              <strong>Created At:</strong> {new Date(ngoDetails.created_at).toLocaleDateString()}
+            </p>
+          </div>
+        </section>
+
+        {/* Posts Section */}
+        <section className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-2xl font-semibold border-b pb-2 mb-4">Posts</h2>
+          {ngoDetails != null ? (
+            <ul className="space-y-6">
+              {ngoDetails.NGOPosts.map((post) => (
+                <li
+                  key={post.post_id}
+                  className="bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <p>
+                    <strong>Item Details:</strong> {post.item_details}
+                  </p>
+                  <p>
+                    <strong>Reason:</strong> {post.reason}
+                  </p>
+                  <p>
+                    <strong>Address:</strong> {post.address}
+                  </p>
+                  {post.packaging_instructions && (
+                    <p>
+                      <strong>Packaging Instructions:</strong>{" "}
+                      {post.packaging_instructions}
+                    </p>
+                  )}
+                  <p>
+                    <strong>Created At:</strong> {new Date(post.created_at).toLocaleDateString()}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500">No posts available.</p>
+          )}
+        </section>
       </div>
     </div>
   );
 }
-
