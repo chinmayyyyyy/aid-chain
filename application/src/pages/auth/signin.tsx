@@ -26,12 +26,11 @@ export default function SignInPage() {
       const session = await res.json();
 
       if (session?.user?.role) {
-        const userRole = session.user.role;
-
+        const userRole = role;
         // Redirect based on the role
         router.push(
           userRole === "admin"
-            ? "/admin/dashboard"
+            ? "/admin"
             : userRole === "ngo"
             ? "/ngo/dashboard"
             : "/user/dashboard"
