@@ -33,7 +33,7 @@ model NGOPost {
   created_at              DateTime  @default(now())
   updated_at              DateTime  @updatedAt
   status                  String    @default("Active") @db.VarChar(20) // Active, Fulfilled, or Closed
-
+  emergency               Boolean?  @default(false)
   NGO                     User      @relation(fields: [ngo_id], references: [user_id])
   Donations               Donation[]
 }

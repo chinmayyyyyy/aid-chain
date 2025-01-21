@@ -50,6 +50,14 @@ export default function NGOsExplorePage() {
 
   return (
     <div className="min-h-screen bg-gray-100 py-8">
+
+<div className="h-64 w-full bg-gray-200 relative">
+          <img
+            src="https://plus.unsplash.com/premium_photo-1682092585257-58d1c813d9b4?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" // Replace with dynamic URL if needed
+            alt="NGO Related"
+            className="h-full w-full object-cover"
+          />
+        </div>
       <div className="max-w-4xl mx-auto px-4">
         <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">Explore NGOs</h1>
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

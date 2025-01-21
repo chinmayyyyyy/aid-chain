@@ -68,6 +68,13 @@ const UserDashboard = () => {
 
   return (
     <div className="container mx-auto p-6">
+       <div className="h-64 bg-gray-200 relative">
+          <img
+            src="https://plus.unsplash.com/premium_photo-1683140538884-07fb31428ca6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" // Replace with dynamic URL if needed
+            alt="NGO Related"
+            className="h-full w-full object-cover"
+          />
+        </div>
       {userData.user ? (
         <>
           <header className="flex justify-between items-center mb-8">

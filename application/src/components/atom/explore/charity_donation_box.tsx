@@ -1,3 +1,5 @@
+"use client";
+
 import React, { FC } from 'react';
 import Button from '../button';
 import Image from 'next/image';
@@ -9,11 +11,22 @@ interface ICharityBoxProps {
   title: string;
   location: string;
   description: string;
+  emergency: boolean;
 }
 
-const CharityDonationBox: FC<ICharityBoxProps> = ({ path, title, location, description }) => {
+const CharityDonationBox: FC<ICharityBoxProps> = ({ path, title, location, description, emergency }) => {
   return (
-    <div className="bg-accent_yellow lg:w-[416px] py-[1.5em] px-5" style={BORDER_STYLE}>
+    <div
+      className={`bg-accent_yellow lg:w-[416px] py-[1.5em] px-5 border-2 ${
+        emergency ? 'border-red-500' : ''
+      }`}
+      style={BORDER_STYLE}
+    >
+      {emergency && (
+        <div className="bg-red-500 text-white text-sm px-2 py-1 rounded-md mb-3">
+          Emergency
+        </div>
+      )}
       <div className="my-5 py-3 px-2 rounded-md w-[fit-content] bg-[#F7F9FD]">
         <h1 className="font-[500]">{title}</h1>
         <p className="text-[#787878]">{location}</p>

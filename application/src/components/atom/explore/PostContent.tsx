@@ -60,6 +60,15 @@ const PostDetail = ({ initialPost }: PostDetailProps) => {
   return (
     <Container>
       <div className="my-10 max-w-4xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
+        {/* Image Section */}
+        <div className="h-64 bg-gray-200 relative">
+          <img
+            src="https://plus.unsplash.com/premium_photo-1683140538884-07fb31428ca6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" // Replace with dynamic URL if needed
+            alt="NGO Related"
+            className="h-full w-full object-cover"
+          />
+        </div>
+
         {/* Header Section */}
         <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6 text-white">
           <h1 className="text-4xl font-bold">{post.title}</h1>

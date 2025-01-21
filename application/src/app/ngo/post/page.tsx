@@ -3,31 +3,34 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 
 interface NGOPostFormState {
-  // ngo_id: number;
   title: string;
   item_details: string;
   reason: string;
   address: string;
   packaging_instructions?: string;
   status?: string; // Defaults to "Active"
+  emergency: boolean;
 }
 
 export default function NGOPost() {
   const [form, setForm] = useState<NGOPostFormState>({
-    // ngo_id: 0,
     title: "",
     item_details: "",
     reason: "",
     address: "",
     packaging_instructions: "",
     status: "Active",
+    emergency: false,
   });
 
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setForm((prevForm) => ({ ...prevForm, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -45,13 +48,13 @@ export default function NGOPost() {
       if (response.ok) {
         alert("NGO Post created successfully!");
         setForm({
-          // ngo_id: 0,
           title: "",
           item_details: "",
           reason: "",
           address: "",
           packaging_instructions: "",
           status: "Active",
+          emergency: false,
         }); // Reset form
       } else {
         alert(data.error || "Failed to create post");
@@ -70,21 +73,6 @@ export default function NGOPost() {
         className="bg-white p-6 rounded-lg shadow-md w-full max-w-md"
       >
         <h1 className="text-xl font-bold mb-4 text-gray-800">Create NGO Post</h1>
-        {/* <div className="mb-4">
-          <label htmlFor="ngo_id" className="block text-gray-700 font-medium mb-1">
-            NGO ID
-          </label>
-          <input
-            type="number"
-            id="ngo_id"
-            name="ngo_id"
-            placeholder="Enter NGO ID"
-            value={form.ngo_id}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div> */}
         <div className="mb-4">
           <label htmlFor="title" className="block text-gray-700 font-medium mb-1">
             Title
@@ -156,6 +144,19 @@ export default function NGOPost() {
             value={form.packaging_instructions}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="emergency" className="block text-gray-700 font-medium mb-1">
+            Emergency Post
+          </label>
+          <input
+            type="checkbox"
+            id="emergency"
+            name="emergency"
+            checked={form.emergency}
+            onChange={handleChange}
+            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
           />
         </div>
         <button

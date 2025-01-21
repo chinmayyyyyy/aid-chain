@@ -36,11 +36,12 @@ const CharityListing = () => {
       <div className="my-[5em] flex gap-5 flex-wrap">
         {posts.map((post) => (
           <CharityDonationBox
-            key={post.id}
+            key={post.post_id}
             path={`/explore/${post.post_id}`}
             title={post.title}
             location={post.address}
             description={post.NGO.username}
+            emergency={post.emergency}
           />
         ))}
       </div>
