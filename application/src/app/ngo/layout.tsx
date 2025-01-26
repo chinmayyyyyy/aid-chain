@@ -8,11 +8,11 @@ export default function Layout({
 }): JSX.Element {
   return (
     <div>
-      <Header />
+     <Header isHomePage={true} isLoggedIn={true} />
     <div className="flex">
         <div className="w-72 border-r border-slate-300 min-h-screen mr-4 pt-28">
             <div>
-                <SidebarItem href={"/admin"} icon={<HomeIcon />} title="Home" />
+                <SidebarItem href={"dashboard"} icon={<HomeIcon />} title="Home" />
                 <SidebarItem href={"my-posts"} icon={<HomeIcon />} title="My Post" />
                 <SidebarItem href={"post"} icon={<HomeIcon />} title="New Post" />
                 <SidebarItem href={"request"} icon={<TransferIcon />} title="Donations" />

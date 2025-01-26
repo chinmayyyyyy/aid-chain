@@ -7,16 +7,27 @@ import { FaTrash } from "react-icons/fa";
 const PostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // State for loading
+  const [deleting, setDeleting] = useState(false); // State for delete loading
 
   useEffect(() => {
+    setLoading(true); // Set loading to true when starting the fetch
     fetch("/api/ngoPosts/get")
       .then((res) => res.json())
-      .then((data) => setPosts(data))
-      .catch((error) => console.error("Error fetching posts:", error));
+      .then((data) => {
+        setPosts(data);
+        setLoading(false); // Set loading to false when data is fetched
+      })
+      .catch((error) => {
+        setError("Error fetching posts: " + error);
+        setLoading(false); // Set loading to false in case of an error
+      });
   }, []);
 
   const handleDelete = async (postId, ngoId) => {
     if (!confirm("Are you sure you want to delete this post?")) return;
+
+    setDeleting(true); // Set deleting state to true while the deletion is in process
 
     try {
       await deleteNGOPost(postId, ngoId);
@@ -27,6 +38,8 @@ const PostsPage = () => {
     } catch (err) {
       console.error("Error deleting post:", err);
       setError(err.message || "Failed to delete post.");
+    } finally {
+      setDeleting(false); // Set deleting state to false after deletion is complete
     }
   };
 
@@ -40,7 +53,16 @@ const PostsPage = () => {
           <p>{error}</p>
         </div>
       )}
-      {posts.length === 0 ? (
+
+      {/* Loader when posts are being fetched */}
+      {loading ? (
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <p className="text-2xl text-gray-500 mb-4">Loading posts...</p>
+            <div className="w-16 h-16 border-t-4 border-black-600 border-solid rounded-full animate-spin"></div>
+          </div>
+        </div>
+      ) : posts.length === 0 ? (
         <div className="flex items-center justify-center h-96">
           <div className="text-center">
             <p className="text-2xl text-gray-500 mb-4">No posts available!</p>
@@ -96,9 +118,16 @@ const PostsPage = () => {
                       onClick={() => handleDelete(post.post_id, post.ngo_id)}
                       className="text-red-500 hover:text-red-700"
                       title="Delete post"
+                      disabled={deleting} // Disable button while deleting
                     >
-                      <FaTrash className="inline-block mr-1" />
-                      Delete
+                      {deleting ? (
+                        <div className="w-4 h-4 border-t-4 border-red-600 border-solid rounded-full animate-spin"></div>
+                      ) : (
+                        <>
+                          <FaTrash className="inline-block mr-1" />
+                          Delete
+                        </>
+                      )}
                     </button>
                   </td>
                 </tr>

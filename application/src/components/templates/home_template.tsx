@@ -8,7 +8,10 @@ import GoalsSeection from '../molecules/home/gaols';
 const HomeTemplate = () => {
   return (
     <div>
-      <Header />
+      <Header
+          isHomePage={true}
+          isLoggedIn={false}
+       />
       <Hero />
       <Mission />
       <SomeCharityListing />

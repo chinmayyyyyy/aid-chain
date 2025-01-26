@@ -4,12 +4,19 @@ import React, { useEffect, useState } from "react";
 const DonationsPage = () => {
   const [donations, setDonations] = useState([]);
   const [selectedDonation, setSelectedDonation] = useState(null);
+  const [loading, setLoading] = useState(true); // State to track loading
 
   useEffect(() => {
     fetch("/api/donations/get")
       .then((res) => res.json())
-      .then((data) => setDonations(data))
-      .catch((error) => console.error("Error fetching donations:", error));
+      .then((data) => {
+        setDonations(data);
+        setLoading(false); // Set loading to false after data is fetched
+      })
+      .catch((error) => {
+        console.error("Error fetching donations:", error);
+        setLoading(false); // Set loading to false if there is an error
+      });
   }, []);
 
   const handleViewMore = (donation) => {
@@ -25,7 +32,17 @@ const DonationsPage = () => {
       <h1 className="text-4xl font-bold text-center text-gray-800 mb-6">
         All Donations
       </h1>
-      {donations.length === 0 ? (
+
+      {/* Loader section */}
+      {loading ? (
+        <div className="flex items-center justify-center h-96">
+          <div className="loader">
+            <div className="spinner-border animate-spin inline-block w-16 h-16 border-4 border-current border-t-transparent rounded-full" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+      ) : donations.length === 0 ? (
         <div className="flex items-center justify-center h-96">
           <div className="text-center">
             <p className="text-2xl text-gray-500 mb-4">No donations available!</p>
@@ -45,7 +62,7 @@ const DonationsPage = () => {
                 {donation.ngoPost.title}
               </h3>
               <p className="text-gray-600">
-                NGO: <span className="font-medium">{donation.ngo.name}</span>
+                NGO: <span className="font-medium">{donation.ngo.id}</span>
               </p>
               <p className="text-gray-600">
                 Donor: <span className="font-medium">{donation.donor.username}</span>
@@ -84,9 +101,10 @@ const DonationsPage = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               {selectedDonation.ngoPost.title}
             </h2>
-            {/* <p className="text-gray-600">
-              NGO: <span className="font-medium">{selectedDonation.ngo.name}</span>
-            </p> */}
+            <p className="text-gray-600">
+              Donotion Id:{" "}
+              <span className="font-medium">{selectedDonation.donation_id}</span>
+            </p>
             <p className="text-gray-600">
               Donor:{" "}
               <span className="font-medium">{selectedDonation.donor.username}</span>

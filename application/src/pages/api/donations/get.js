@@ -36,7 +36,6 @@ const getAllDonations = async (req, res) => {
       status: donation.status,
       created_at: donation.created_at,
     }));
-
     res.status(200).json(formattedDonations);
   } catch (error) {
     console.error("Error fetching donations:", error);

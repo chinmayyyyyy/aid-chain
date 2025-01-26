@@ -3,8 +3,8 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 
 export default function SignInPage() {
-  const [email, setEmail] = useState("abc@xyz.com");
-  const [password, setPassword] = useState("abc");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [role, setRole] = useState("user"); // Default role is 'user'
   const [error, setError] = useState("");
   const router = useRouter();
@@ -69,9 +69,9 @@ export default function SignInPage() {
             required
             className="select-role"
           >
-            <option value="user">User</option>
+            <option value="user">Donor</option>
             <option value="admin">Admin</option>
-            <option value="ngo">NGO</option>
+            <option value="ngo">Donne</option>
           </select>
           <button type="submit" className="submit-btn">Sign In</button>
         </form>
