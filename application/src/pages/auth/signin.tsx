@@ -5,41 +5,66 @@ import { useRouter } from "next/router";
 export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user"); // Default role is 'user'
+  const [role, setRole] = useState("user"); 
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const whitelist = [
+    { email: "admin@example.com", password: "admin123", role: "admin" },
+    { email: "dattazore66@gmail.com", password: "zeal@123", role: "admin" },
+    { email: "sakshimane287@gmail.com", password: "zeal@123", role: "admin" },
+    { email: "manashree.malusare@gmail.com", password: "zeal@123", role: "admin" },
+    { email: "manashree.malusare@gmail.com", password: "zeal@123", role: "admin" }
+  ];
+
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
-
-    const result = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-      role,
-    });
-
-    if (result?.error) {
-      setError(result.error);
-    } else if (result?.ok) {
-      const res = await fetch("/api/auth/session");
-      const session = await res.json();
-
-      if (session?.user?.role) {
-        const userRole = role;
-        // Redirect based on the role
-        router.push(
-          userRole === "admin"
-            ? "/admin"
-            : userRole === "ngo"
-            ? "/ngo/dashboard"
-            : "/user/dashboard"
-        );
+  
+    if (role === "admin") {
+      // Frontend-only validation for admin
+      const user = whitelist.find(
+        (u) => u.email === email && u.password === password
+      );
+  
+      if (user) {
+        router.push("/admin"); // Redirect to admin dashboard
       } else {
-        setError("Failed to fetch user role. Please try again.");
+        setError("Invalid email or password. Please try again.");
+      }
+    } else {
+      // Backend authentication for non-admin roles
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+        role,
+      });
+  
+      if (result?.error) {
+        setError(result.error); // Display error if authentication fails
+      } else if (result?.ok) {
+        try {
+          const res = await fetch("/api/auth/session");
+          const session = await res.json();
+  
+          if (session?.user?.role) {
+            const userRole = role;
+            // Redirect based on the user role
+            router.push(
+              userRole === "ngo"
+                ? "/ngo/dashboard"
+                : "/user/dashboard"
+            );
+          } else {
+            setError("Failed to fetch user role. Please try again.");
+          }
+        } catch (error) {
+          setError("An error occurred. Please try again later.");
+        }
       }
     }
   };
+  
 
   return (
     <div className="form-container">
@@ -75,12 +100,6 @@ export default function SignInPage() {
           </select>
           <button type="submit" className="submit-btn">Sign In</button>
         </form>
-        <p className="footer">
-          Don't have an account?{" "}
-          <a href="/signup" className="footer-link">
-            Sign Up
-          </a>
-        </p>
       </div>
 
       <style jsx>{`

@@ -1,7 +1,9 @@
+"use client"
 import Container from '@/app/_layout/container';
 import Button from '@/components/atom/button';
 import React from 'react';
 import { BORDER_STYLE, PRIMARY_FIGURE } from '@/constant/style_constant';
+import { signIn } from 'next-auth/react';
 
 const Hero = () => {
   return (
@@ -21,7 +23,7 @@ const Hero = () => {
           </p>
 
           <div className='my-[1em]'>
-            <Button bg={'bg-black'}>Make Donation</Button>
+            <Button onClick={() => signIn()} bg={'bg-black'}>Make Donation</Button>
           </div>
         </div>
       </div>
